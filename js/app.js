@@ -21,12 +21,12 @@ function foodStopKey(name, date) { return encodeURIComponent(date + '__' + name)
 function restaurantBooked(key) { return storeGet('jp26_rest_' + key) === '1'; }
 function foodStopDone(key) { return storeGet('jp26_food_' + key) === '1'; }
 
-const MAP_PLATFORM = /iPhone|iPad|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1) ? 'apple' : 'google';
-function mapQuery(query) { return P.mapSearch(query, MAP_PLATFORM); }
-function mapRoute(points, mode) { return P.mapDirections(points, mode, MAP_PLATFORM); }
+const IOS = /iPhone|iPad|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+function mapQuery(query) { return P.mapSearch(query, 'google'); }
+function mapRoute(points, mode) { return P.mapDirections(points, mode, 'google'); }
 function extLink(href, className, text) {
   const cls = className ? ' class="' + className + '"' : '';
-  const external = MAP_PLATFORM === 'apple' ? '' : ' target="_blank" rel="noopener noreferrer"';
+  const external = IOS ? '' : ' target="_blank" rel="noopener noreferrer"';
   return '<a' + cls + external + ' href="' + esc(href) + '">' + esc(text) + '</a>';
 }
 
@@ -69,7 +69,7 @@ function restaurantsHTML(group) {
   const list = rows.map(function (row) {
     const key = restaurantKey(row[0]);
     const done = restaurantBooked(key);
-    const mapAttrs = MAP_PLATFORM === 'apple' ? '' : ' target="_blank" rel="noopener noreferrer"';
+    const mapAttrs = IOS ? '' : ' target="_blank" rel="noopener noreferrer"';
     return '<div class="restaurant ' + (done ? 'is-booked' : '') + '"><a' + mapAttrs + ' href="' + esc(mapQuery(row[0])) + '"><div class="restaurant-name">' + esc(row[0]) + '</div><div class="restaurant-type">' + esc(row[1]) + ' · מפה ↗</div></a><button class="book-btn ' + (done ? 'is-booked' : '') + '" data-rkey="' + esc(key) + '" type="button" aria-pressed="' + (done ? 'true' : 'false') + '">' + (done ? '✓ הוזמן' : 'סגרתי') + '</button></div>';
   }).join('');
   return '<details class="subdetails restaurant-details"><summary>' + esc(P.restaurantSummary(rows.length, booked)) + '</summary><div class="restaurants">' + list + '</div></details>';

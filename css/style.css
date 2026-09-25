@@ -54,31 +54,33 @@ main{padding:8px 0 88px}
 .progress-bar span{display:block;height:100%;background:var(--alps)}
 .add-form,.add-card{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
 .add-card{padding:16px}
-.add-grid{display:grid;grid-template-columns:1.3fr 1.3fr .8fr .9fr;gap:8px;width:100%}
+.add-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;width:100%}
+.add-grid input,.add-grid select{min-width:0;width:100%}
 .add-form input,.add-card input,.add-card select,.trip-search,.day-note{border:1px solid var(--line);background:#fff;border-radius:12px;padding:11px 12px;font:inherit}
 .trip-search{width:100%;margin:0 0 12px}
 .place-message{width:100%;margin:0;font-size:14px;color:var(--alps)}
 .place-message.is-warn{color:#8a5a12}
 .tiny-btn,.icon-btn,.food-check,.book-btn{border:1px solid var(--line);background:#fff;border-radius:999px;padding:8px 12px;font-size:13px;font-weight:700;cursor:pointer}
 .tiny-btn.dark{background:var(--ink);color:#fff;border-color:var(--ink)}
-.day-jump{display:flex;gap:8px;overflow:auto;padding:2px 0 12px;scrollbar-width:none}
+.day-jump{display:flex;gap:8px;overflow:auto;padding:2px 0 12px;scrollbar-width:none;min-width:0;max-width:100%}
 .day-jump::-webkit-scrollbar{display:none}
 .day-jump a{min-width:64px;text-align:center;border:1px solid var(--line);background:#fff;border-radius:16px;padding:8px 6px;font-size:12px;color:var(--muted)}
 .day-jump a b{display:block;font-family:var(--serif);font-size:16px;color:var(--ink)}
 .empty-days{margin:0 0 12px;padding:16px;border:1px dashed var(--line);border-radius:16px;color:var(--muted);background:#fff}
 .days{display:grid;gap:12px}
 .day{background:var(--card);border:1px solid var(--line);border-radius:22px;overflow:hidden;scroll-margin-top:84px;box-shadow:var(--shadow)}
-.day[data-region="tokyo"]{box-shadow:inset 4px 0 0 var(--tokyo),var(--shadow)}
-.day[data-region="alps"]{box-shadow:inset 4px 0 0 var(--alps),var(--shadow)}
-.day[data-region="okinawa"]{box-shadow:inset 4px 0 0 var(--okinawa),var(--shadow)}
+.day[data-region="tokyo"]{box-shadow:var(--shadow);border-inline-start:4px solid var(--tokyo)}
+.day[data-region="alps"]{box-shadow:var(--shadow);border-inline-start:4px solid var(--alps)}
+.day[data-region="okinawa"]{box-shadow:var(--shadow);border-inline-start:4px solid var(--okinawa)}
 .day.is-today{outline:2px solid var(--ink)}
-.day>summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:72px 1fr auto;gap:14px;align-items:center;padding:16px 18px}
+.day>summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:72px minmax(0,1fr) auto;gap:14px;align-items:center;padding:16px 18px}
 .day>summary::-webkit-details-marker{display:none}
 .date-box{text-align:center}
 .date-box b{font-family:var(--serif);font-size:22px;display:block;line-height:1;direction:ltr;unicode-bidi:isolate}
 .date-box span{font-size:12px;color:var(--muted)}
-.day-title h3,.day-title strong{display:block;font-size:18px;line-height:1.35;font-weight:700}
-.day-title small{display:block;color:var(--muted);font-size:13px;margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.day-title{min-width:0}
+.day-title h3,.day-title strong{display:block;font-size:18px;line-height:1.35;font-weight:700;overflow-wrap:anywhere}
+.day-title small{display:block;color:var(--muted);font-size:13px;margin-top:4px}
 .day-meta{display:flex;gap:8px;align-items:center}
 .region-dot{width:10px;height:10px;border-radius:50%}
 .chev{font-size:18px;color:#9a9186;transition:.2s}
@@ -120,7 +122,7 @@ main{padding:8px 0 88px}
 .move b{font-size:12px;color:#5f584e;background:#efe6d6;border-radius:999px;padding:3px 8px}
 .note-box{margin-top:14px}
 .day-note{width:100%;min-height:72px;resize:vertical}
-.map-wrap{padding:14px}
+.map-wrap{padding:14px;overflow:hidden}
 #tripMap{height:380px;border-radius:18px;background:#e7e1d6}
 .map-note,.map-fallback{font-size:13px;color:var(--muted);padding:10px 4px 0}
 .simple-row{display:grid;grid-template-columns:110px 1fr auto;gap:12px;align-items:center;padding:14px 16px}
@@ -139,11 +141,17 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 @media(max-width:800px){
   .check-groups,.add-grid,.journey-list{grid-template-columns:1fr}
   .journey-list,.hero-stats{grid-template-columns:1fr 1fr}
-  .hero{min-height:88vh;padding-top:72px}
-  .day>summary{grid-template-columns:64px 1fr auto;padding:14px}
+  .hero{min-height:70vh;padding-top:72px}
+  .hero h1{font-size:46px}
+  .nav-inner{flex-wrap:wrap;overflow:visible;row-gap:2px}
+  .nav a,.nav button{padding:6px 10px;font-size:14px}
+  .day>summary{grid-template-columns:58px minmax(0,1fr) auto;gap:10px;padding:14px 12px}
+  .date-box b{font-size:18px}
   .food,.simple-row{grid-template-columns:1fr}
   .simple-row>a{grid-column:1}
   .destination-top{flex-direction:column}
+  .section-head{align-items:start}
+  .section-head h2{font-size:28px}
 }
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.chev{transition:none}}
 @media print{
