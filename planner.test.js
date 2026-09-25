@@ -85,6 +85,16 @@ test('a restaurant lands on the day that actually visits that area', function ()
   assert.ok(Planner.checklist.some(function (group) { return group.items.some(function (item) { return item.id === 'zamami'; }); }));
 });
 
+test('shared edits merge by the newer stamp', function () {
+  const phone = { checks: { passport: { v: true, at: 2 } }, restaurants: { a: { v: { id: 'a', name: 'Afuri' }, at: 5 } }, customChecks: {}, food: {}, booked: {}, notes: {} };
+  const other = { checks: { passport: { v: false, at: 1 }, shoes: { v: true, at: 3 } }, restaurants: { a: { v: null, at: 9 } }, customChecks: {}, food: {}, booked: {}, notes: { '2026-10-01': { v: 'הערה', at: 4 } } };
+  const merged = Planner.mergeShared(phone, other);
+  assert.equal(merged.checks.passport.v, true);
+  assert.equal(merged.checks.shoes.v, true);
+  assert.equal(merged.restaurants.a.v, null);
+  assert.equal(merged.notes['2026-10-01'].v, 'הערה');
+});
+
 test('storage failures do not throw', function () {
   const broken = { getItem: function () { throw new Error('denied'); }, setItem: function () { throw new Error('denied'); } };
   assert.equal(Planner.storageGet(broken, 'k'), null);

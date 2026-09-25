@@ -11,7 +11,11 @@ const colors = { tokyo: 'var(--tokyo)', alps: 'var(--alps)', okinawa: 'var(--oki
 const esc = P.escapeHtml;
 
 function storeGet(key) { return P.storageGet(localStorage, key); }
-function storeSet(key, value) { P.storageSet(localStorage, key, value); }
+let applyingRemote = false;
+function storeSet(key, value) {
+  P.storageSet(localStorage, key, value);
+  if (!applyingRemote) touchStamp(key);
+}
 function restaurantKey(name) { return encodeURIComponent(name); }
 function foodStopKey(name, date) { return encodeURIComponent(date + '__' + name); }
 function restaurantBooked(key) { return storeGet('jp26_rest_' + key) === '1'; }
@@ -91,7 +95,25 @@ function loadList(key) {
     return Array.isArray(parsed) ? parsed : [];
   } catch (err) { return []; }
 }
-function saveList(key, list) { storeSet(key, JSON.stringify(list)); }
+function saveList(key, list) {
+  if (!applyingRemote) {
+    const meta = loadMeta();
+    list.forEach(function (item) {
+      const field = key + ':' + item.id;
+      if (!meta[field]) meta[field] = Date.now();
+    });
+    P.storageSet(localStorage, META_KEY, JSON.stringify(meta));
+  }
+  storeSet(key, JSON.stringify(list));
+}
+function tombstone(bucket, id) {
+  const meta = loadMeta();
+  meta[bucket] = meta[bucket] || {};
+  meta[bucket][id] = Date.now();
+  delete meta[(bucket === 'removedChecks' ? CHECK_KEY : CUSTOM_KEY) + ':' + id];
+  P.storageSet(localStorage, META_KEY, JSON.stringify(meta));
+  schedulePush();
+}
 function customRestaurants() {
   return loadList(CUSTOM_KEY).filter(function (item) { return item && item.id && item.name && item.date; });
 }
@@ -335,6 +357,7 @@ document.getElementById('checklist').addEventListener('click', function (event) 
   const button = event.target.closest('.remove-check');
   if (!button) return;
   event.preventDefault();
+  tombstone('removedChecks', button.dataset.id);
   saveList(CHECK_KEY, customChecks().filter(function (item) { return item.id !== button.dataset.id; }));
   renderChecklist();
 });
@@ -404,6 +427,7 @@ document.addEventListener('click', function (event) {
   const removeRest = event.target.closest('.remove-custom');
   if (removeRest) {
     event.preventDefault();
+    tombstone('removedRests', removeRest.dataset.id);
     saveList(CUSTOM_KEY, customRestaurants().filter(function (item) { return item.id !== removeRest.dataset.id; }));
     render(new Set([...document.querySelectorAll('.day[open]')].map(function (el) { return el.id; })));
     return;
@@ -438,6 +462,133 @@ document.addEventListener('click', function (event) {
   const booked = [...buttons].filter(function (item) { return item.classList.contains('is-booked'); }).length;
   details.querySelector('summary').textContent = P.restaurantSummary(buttons.length, booked);
 });
+
+const META_KEY = 'jp26_sync_meta';
+const SYNC_URL = location.hostname.endsWith('github.io')
+  ? 'https://japan-2026-sync-production.up.railway.app/api/state'
+  : location.origin + '/api/state';
+
+function loadMeta() {
+  try { return JSON.parse(storeGet(META_KEY) || '{}'); } catch (err) { return {}; }
+}
+function touchStamp(key) {
+  const meta = loadMeta();
+  meta[key] = Date.now();
+  P.storageSet(localStorage, META_KEY, JSON.stringify(meta));
+  schedulePush();
+}
+function entry(key, value) {
+  return { v: value, at: loadMeta()[key] || 0 };
+}
+function snapshot() {
+  const doc = { checks: {}, customChecks: {}, restaurants: {}, food: {}, booked: {}, notes: {} };
+  P.checklist.forEach(function (group) {
+    group.items.forEach(function (item) {
+      doc.checks[item.id] = entry('jp26_v2_' + item.id, storeGet('jp26_v2_' + item.id) === '1');
+    });
+  });
+  customChecks().forEach(function (item) { doc.customChecks[item.id] = entry(CHECK_KEY + ':' + item.id, item); });
+  const removedChecks = loadMeta().removedChecks || {};
+  Object.keys(removedChecks).forEach(function (id) {
+    if (!doc.customChecks[id]) doc.customChecks[id] = { v: null, at: removedChecks[id] };
+  });
+  customRestaurants().forEach(function (item) { doc.restaurants[item.id] = entry(CUSTOM_KEY + ':' + item.id, item); });
+  const removedRests = loadMeta().removedRests || {};
+  Object.keys(removedRests).forEach(function (id) {
+    if (!doc.restaurants[id]) doc.restaurants[id] = { v: null, at: removedRests[id] };
+  });
+  for (let i = 0; i < localStorage.length; i++) {
+    const key = localStorage.key(i);
+    if (key.indexOf('jp26_food_') === 0) doc.food[key.slice(10)] = entry(key, storeGet(key) === '1');
+    else if (key.indexOf('jp26_rest_') === 0) doc.booked[key.slice(10)] = entry(key, storeGet(key) === '1');
+    else if (key.indexOf('jp26_note_') === 0) doc.notes[key.slice(10)] = entry(key, storeGet(key) || '');
+  }
+  return doc;
+}
+function applyDoc(doc) {
+  applyingRemote = true;
+  const meta = loadMeta();
+  Object.keys(doc.checks || {}).forEach(function (id) {
+    const row = doc.checks[id];
+    const key = 'jp26_v2_' + id;
+    if ((meta[key] || 0) <= row.at) {
+      storeSet(key, row.v ? '1' : '0');
+      meta[key] = row.at;
+    }
+  });
+  let checks = customChecks();
+  meta.removedChecks = meta.removedChecks || {};
+  Object.keys(doc.customChecks || {}).forEach(function (id) {
+    const row = doc.customChecks[id];
+    const stamp = meta[CHECK_KEY + ':' + id] || meta.removedChecks[id] || 0;
+    if (stamp > row.at) return;
+    checks = checks.filter(function (item) { return item.id !== id; });
+    if (row.v) checks.push(row.v);
+    else meta.removedChecks[id] = row.at;
+    meta[CHECK_KEY + ':' + id] = row.at;
+  });
+  storeSet(CHECK_KEY, JSON.stringify(checks));
+  let rests = customRestaurants();
+  meta.removedRests = meta.removedRests || {};
+  Object.keys(doc.restaurants || {}).forEach(function (id) {
+    const row = doc.restaurants[id];
+    const stamp = meta[CUSTOM_KEY + ':' + id] || meta.removedRests[id] || 0;
+    if (stamp > row.at) return;
+    rests = rests.filter(function (item) { return item.id !== id; });
+    if (row.v) rests.push(row.v);
+    else meta.removedRests[id] = row.at;
+    meta[CUSTOM_KEY + ':' + id] = row.at;
+  });
+  storeSet(CUSTOM_KEY, JSON.stringify(rests));
+  Object.keys(doc.food || {}).forEach(function (id) {
+    const key = 'jp26_food_' + id;
+    if ((meta[key] || 0) <= doc.food[id].at) { storeSet(key, doc.food[id].v ? '1' : '0'); meta[key] = doc.food[id].at; }
+  });
+  Object.keys(doc.booked || {}).forEach(function (id) {
+    const key = 'jp26_rest_' + id;
+    if ((meta[key] || 0) <= doc.booked[id].at) { storeSet(key, doc.booked[id].v ? '1' : '0'); meta[key] = doc.booked[id].at; }
+  });
+  Object.keys(doc.notes || {}).forEach(function (date) {
+    const key = 'jp26_note_' + date;
+    if ((meta[key] || 0) <= doc.notes[date].at) { storeSet(key, doc.notes[date].v || ''); meta[key] = doc.notes[date].at; }
+  });
+  P.storageSet(localStorage, META_KEY, JSON.stringify(meta));
+  applyingRemote = false;
+}
+let pushTimer = 0;
+function schedulePush() {
+  clearTimeout(pushTimer);
+  pushTimer = setTimeout(pushState, 400);
+}
+function sameDoc(a, b) { return JSON.stringify(a) === JSON.stringify(b); }
+function pushState() {
+  const sent = snapshot();
+  fetch(SYNC_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(sent) })
+    .then(function (res) { return res.json(); })
+    .then(function (doc) {
+      if (sameDoc(doc, sent)) return;
+      applyDoc(doc);
+      refreshShared();
+    })
+    .catch(function () {});
+}
+function pullState() {
+  fetch(SYNC_URL)
+    .then(function (res) { return res.json(); })
+    .then(function (doc) {
+      const merged = P.mergeShared(snapshot(), doc);
+      if (sameDoc(merged, snapshot())) return;
+      applyDoc(merged);
+      refreshShared();
+    })
+    .catch(function () {});
+}
+function refreshShared() {
+  renderChecklist();
+  render(new Set([...document.querySelectorAll('.day[open]')].map(function (el) { return el.id; })));
+}
+pullState();
+setInterval(pullState, 4000);
 
 if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
   navigator.serviceWorker.register('./service-worker.js').catch(function () {});

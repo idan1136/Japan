@@ -266,6 +266,28 @@
     try { storage.setItem(key, value); } catch (err) { /* private mode */ }
   }
 
+  function mergeShared(local, remote) {
+    const a = local || {};
+    const b = remote || {};
+    const out = {};
+    const sections = ['checks', 'customChecks', 'restaurants', 'food', 'booked', 'notes'];
+    sections.forEach(function (section) {
+      const left = a[section] || {};
+      const right = b[section] || {};
+      const merged = {};
+      Object.keys(left).concat(Object.keys(right)).forEach(function (key) {
+        if (merged[key]) return;
+        const lv = left[key];
+        const rv = right[key];
+        const lat = lv && typeof lv.at === 'number' ? lv.at : 0;
+        const rat = rv && typeof rv.at === 'number' ? rv.at : 0;
+        merged[key] = rat > lat ? rv : lv;
+      });
+      out[section] = merged;
+    });
+    return out;
+  }
+
   return {
     escapeHtml: escapeHtml,
     weekdayLabel: weekdayLabel,
@@ -282,6 +304,7 @@
     restaurantSummary: restaurantSummary,
     storageGet: storageGet,
     storageSet: storageSet,
+    mergeShared: mergeShared,
     checklist: CHECKLIST,
     normalize: normalize,
     placeRestaurant: placeRestaurant
