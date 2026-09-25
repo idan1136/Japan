@@ -63,20 +63,25 @@
     return route;
   }
 
-  function mapSearch(query) {
-    return 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(query + ', Japan');
+  function mapSearch(query, platform) {
+    const q = query + ', Japan';
+    if (platform === 'apple') return 'https://maps.apple.com/?q=' + encodeURIComponent(q);
+    return 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(q);
   }
 
-  function mapDirections(points, mode) {
+  function mapDirections(points, mode, platform) {
     const list = points || [];
-    if (list.length < 2) return mapSearch(list[0] || 'Japan');
+    if (list.length < 2) return mapSearch(list[0] || 'Japan', platform);
     const travel = MODES.has(mode) ? mode : 'walking';
     const enc = encodeURIComponent;
-    const origin = enc(list[0] + ', Japan');
-    const dest = enc(list[list.length - 1] + ', Japan');
-    const wp = list.slice(1, -1).map(function (point) { return enc(point + ', Japan'); }).join('|');
-    let url = 'https://www.google.com/maps/dir/?api=1&origin=' + origin + '&destination=' + dest + '&travelmode=' + travel;
-    if (wp) url += '&waypoints=' + encodeURIComponent(wp).replace(/%7C/g, '|');
+    if (platform === 'apple') {
+      const flag = travel === 'walking' ? 'w' : travel === 'driving' ? 'd' : 'r';
+      const daddr = list.slice(1).map(function (point) { return enc(point + ', Japan'); }).join('+to:');
+      return 'https://maps.apple.com/?saddr=' + enc(list[0] + ', Japan') + '&daddr=' + daddr + '&dirflg=' + flag;
+    }
+    let url = 'https://www.google.com/maps/dir/?api=1&origin=' + enc(list[0] + ', Japan') + '&destination=' + enc(list[list.length - 1] + ', Japan') + '&travelmode=' + travel;
+    const middle = list.slice(1, -1);
+    if (middle.length) url += '&waypoints=' + middle.map(function (point) { return enc(point + ', Japan'); }).join('|');
     return url;
   }
 

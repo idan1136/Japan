@@ -17,9 +17,13 @@ function foodStopKey(name, date) { return encodeURIComponent(date + '__' + name)
 function restaurantBooked(key) { return storeGet('jp26_rest_' + key) === '1'; }
 function foodStopDone(key) { return storeGet('jp26_food_' + key) === '1'; }
 
+const MAP_PLATFORM = /iPhone|iPad|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1) ? 'apple' : 'google';
+function mapQuery(query) { return P.mapSearch(query, MAP_PLATFORM); }
+function mapRoute(points, mode) { return P.mapDirections(points, mode, MAP_PLATFORM); }
 function extLink(href, className, text) {
   const cls = className ? ' class="' + className + '"' : '';
-  return '<a' + cls + ' target="_blank" rel="noopener noreferrer" href="' + esc(href) + '">' + esc(text) + '</a>';
+  const external = MAP_PLATFORM === 'apple' ? '' : ' target="_blank" rel="noopener noreferrer"';
+  return '<a' + cls + external + ' href="' + esc(href) + '">' + esc(text) + '</a>';
 }
 
 function eventsHTML(events) {
@@ -28,7 +32,7 @@ function eventsHTML(events) {
     const source = /^https:\/\//.test(event.source || '') ? event.source : '';
     return '<div class="event"><div class="event-top"><div><h4>🎉 ' + esc(event.title) + '</h4><div class="event-time">' + esc(event.time) + '</div></div></div><div class="event-place">📍 ' + esc(event.place) + '</div><div class="event-note">' + esc(event.note) + '</div>' +
       (event.warning ? '<div class="warning">' + esc(event.warning) + '</div>' : '') +
-      '<div class="event-actions">' + extLink(P.mapSearch(event.map), 'tiny-btn dark', 'מיקום במפות ↗') +
+      '<div class="event-actions">' + extLink(mapQuery(event.map), 'tiny-btn dark', 'מיקום במפות ↗') +
       (source ? extLink(source, 'tiny-btn', 'אתר רשמי ↗') : '') + '</div></div>';
   }).join('');
 }
@@ -41,7 +45,7 @@ function foodHTML(date) {
     const done = foodStopDone(key);
     return '<div class="food ' + (done ? 'is-done' : '') + '"><div><div class="food-name">' + esc(stop.name) +
       (stop.pick ? '<span class="pick">⭐ מתאים למסלול</span>' : '') + '</div><div class="food-sub">' + esc(stop.area) + ' · ' + esc(stop.kind) + '</div><div class="food-note">' + esc(stop.note) + '</div></div><div class="food-actions">' +
-      extLink(P.mapSearch(stop.name), 'icon-btn', 'מפה') +
+      extLink(mapQuery(stop.name), 'icon-btn', 'מפה') +
       '<button class="food-check ' + (done ? 'is-done' : '') + '" data-fkey="' + esc(key) + '" type="button" aria-pressed="' + (done ? 'true' : 'false') + '">' + (done ? '✓ אכלנו' : 'אכלנו') + '</button></div></div>';
   }).join('');
   return '<div class="block"><div class="block-title"><h4>🍜 אוכל בדרך</h4></div><div class="food-list">' + rows + '</div></div>';
@@ -61,7 +65,8 @@ function restaurantsHTML(group) {
   const list = rows.map(function (row) {
     const key = restaurantKey(row[0]);
     const done = restaurantBooked(key);
-    return '<div class="restaurant ' + (done ? 'is-booked' : '') + '"><a target="_blank" rel="noopener noreferrer" href="' + esc(P.mapSearch(row[0])) + '"><div class="restaurant-name">' + esc(row[0]) + '</div><div class="restaurant-type">' + esc(row[1]) + ' · מפה ↗</div></a><button class="book-btn ' + (done ? 'is-booked' : '') + '" data-rkey="' + esc(key) + '" type="button" aria-pressed="' + (done ? 'true' : 'false') + '">' + (done ? '✓ הוזמן' : 'סגרתי') + '</button></div>';
+    const mapAttrs = MAP_PLATFORM === 'apple' ? '' : ' target="_blank" rel="noopener noreferrer"';
+    return '<div class="restaurant ' + (done ? 'is-booked' : '') + '"><a' + mapAttrs + ' href="' + esc(mapQuery(row[0])) + '"><div class="restaurant-name">' + esc(row[0]) + '</div><div class="restaurant-type">' + esc(row[1]) + ' · מפה ↗</div></a><button class="book-btn ' + (done ? 'is-booked' : '') + '" data-rkey="' + esc(key) + '" type="button" aria-pressed="' + (done ? 'true' : 'false') + '">' + (done ? '✓ הוזמן' : 'סגרתי') + '</button></div>';
   }).join('');
   return '<details class="subdetails restaurant-details"><summary>' + esc(P.restaurantSummary(rows.length, booked)) + '</summary><div class="restaurants">' + list + '</div></details>';
 }
@@ -70,10 +75,10 @@ function routeHTML(day) {
   const points = P.routePoints(day);
   if (!points.length) return '';
   const chips = points.map(function (point, index) {
-    return (index ? '<span class="arrow">←</span>' : '') + extLink(P.mapSearch(point), '', point);
+    return (index ? '<span class="arrow">←</span>' : '') + extLink(mapQuery(point), '', point);
   }).join('');
   return '<div class="block"><div class="block-title"><h4>המסלול</h4></div><div class="route-flow">' + chips + '</div>' +
-    extLink(P.mapDirections(points, P.travelMode(day)), 'primary-link', P.routeLinkLabel(points)) + '</div>';
+    extLink(mapRoute(points, P.travelMode(day)), 'primary-link', P.routeLinkLabel(points)) + '</div>';
 }
 
 const CUSTOM_KEY = 'jp26_custom_rest';
@@ -99,7 +104,7 @@ function customHTML(date) {
   if (!rows.length) return '';
   return '<div class="block"><div class="block-title"><h4>מסעדות שהוספתם</h4></div><div class="custom-list">' + rows.map(function (item) {
     return '<div class="food"><div><div class="food-name">' + esc(item.name) + '</div><div class="food-sub">' + esc([item.area, item.kind].filter(Boolean).join(' · ')) + '</div><div class="food-note">' + esc(item.reason || '') + '</div></div><div class="food-actions">' +
-      extLink(P.mapSearch(item.name + (item.area ? ' ' + item.area : '')), 'icon-btn', 'מפה') +
+      extLink(mapQuery(item.name + (item.area ? ' ' + item.area : '')), 'icon-btn', 'מפה') +
       '<button class="icon-btn remove-custom" type="button" data-id="' + esc(item.id) + '">הסרה</button></div></div>';
   }).join('') + '</div></div>';
 }
@@ -181,13 +186,13 @@ function renderJump() {
 
 function renderHotels() {
   document.getElementById('hotelList').innerHTML = HOTELS.map(function (hotel) {
-    return '<div class="simple-row"><div class="when">' + esc(hotel.dates) + '</div><div><b>' + esc(hotel.name) + '</b><small>' + esc(hotel.area) + '</small></div>' + extLink(P.mapSearch(hotel.name), '', 'מפה ↗') + '</div>';
+    return '<div class="simple-row"><div class="when">' + esc(hotel.dates) + '</div><div><b>' + esc(hotel.name) + '</b><small>' + esc(hotel.area) + '</small></div>' + extLink(mapQuery(hotel.name), '', 'מפה ↗') + '</div>';
   }).join('');
 }
 
 function renderDest() {
   document.getElementById('destinationList').innerHTML = DESTINATIONS.map(function (place) {
-    return '<article class="destination"><div class="destination-top"><div><div class="destination-name">' + esc(place.name) + '</div><div class="restaurant-type">' + esc(place.type) + '</div></div><span class="destination-area">📍 ' + esc(place.area) + '</span></div><p>' + esc(place.why) + '</p>' + extLink(P.mapSearch(place.name), '', 'פתיחה במפות ↗') + '</article>';
+    return '<article class="destination"><div class="destination-top"><div><div class="destination-name">' + esc(place.name) + '</div><div class="restaurant-type">' + esc(place.type) + '</div></div><span class="destination-area">📍 ' + esc(place.area) + '</span></div><p>' + esc(place.why) + '</p>' + extLink(mapQuery(place.name), '', 'פתיחה במפות ↗') + '</article>';
   }).join('');
 }
 

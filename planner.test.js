@@ -60,6 +60,12 @@ test('every night except the flight home has the hotel from the hotel list', fun
 
 test('map links escape ampersands and reject markup', function () {
   assert.equal(Planner.escapeHtml('a & <b>'), 'a &amp; &lt;b&gt;');
+  const route = Planner.mapDirections(['Cat Street', 'Ebisu', 'Shibuya'], 'walking');
+  assert.equal(route.includes('%2520'), false);
+  assert.match(route, /waypoints=Ebisu%2C%20Japan/);
+  const apple = Planner.mapDirections(['Ebisu', 'Shibuya'], 'walking', 'apple');
+  assert.match(apple, /^https:\/\/maps\.apple\.com\/\?saddr=/);
+  assert.match(apple, /dirflg=w/);
   const url = Planner.mapDirections(['A', 'B'], 'walking');
   assert.match(Planner.escapeHtml(url), /&amp;origin=/);
   assert.equal(new URL(Planner.mapDirections(['Only'], 'transit')).searchParams.get('query'), 'Only, Japan');
