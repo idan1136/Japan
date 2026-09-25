@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f7f7f4">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Japan 2026">
+<title>Japan 2026 — Trip Planner</title>
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="images/icon-192.png">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header class="top" id="top"><div class="wrap top-row"><div><div class="kicker">JAPAN · 1–16 OCTOBER 2026</div><h1>הטיול שלנו ליפן 🇯🇵</h1><p class="subtitle">מסלול נקי ופשוט: קודם רואים מה עושים בכל יום; אוכל, לוגיסטיקה והמלצות נפתחים רק כשצריך.</p><div class="count"><b id="countdown">—</b> <span id="countdownLabel">ימים עד הטיול</span></div></div><img class="hero-art" src="images/tokyo.svg" alt="איור טוקיו"></div></header>
+<nav class="nav"><div class="wrap nav-inner"><button class="active" data-filter="all" type="button">הכל</button><button data-filter="tokyo" type="button">טוקיו</button><button data-filter="alps" type="button">האלפים</button><button data-filter="okinawa" type="button">אוקינאווה</button><a href="#checklist">צ׳קליסט</a><a href="#add-place">מסעדה</a><a href="#destinations">⭐ שווה נסיעה</a><a href="#hotels">מלונות</a><a href="#map">מפה</a></div></nav>
+<main class="wrap">
+<section class="section" id="checklist"><div class="section-head"><div><h2>צ׳קליסט לטיול</h2><p id="checkProgress">מה לסגור, מה לארוז, ומה לזכור בדרך.</p></div></div><div id="checkGroups" class="check-groups"></div><form id="addCheck" class="add-form"><input name="label" required placeholder="פריט נוסף לצ׳קליסט" maxlength="120"><button class="tiny-btn dark" type="submit">הוספה</button></form></section>
+<section class="section"><div class="card action-card"><h3>התמונה הגדולה</h3><div class="overview"><span>Tokyo</span><span>Takayama / Kamikochi</span><span>Kanazawa</span><span>Okinawa</span><span>Tokyo</span></div></div></section>
+<section class="section" id="add-place"><div class="section-head"><div><h2>הוספת מסעדה</h2><p>כתבו שם ואזור. המסעדה תיכנס ליום שהמסלול עובר בו.</p></div></div><form id="addRestaurant" class="card add-card"><div class="add-grid"><input name="name" required placeholder="שם המסעדה" maxlength="80"><input name="area" placeholder="שכונה, למשל Ebisu או קנזאווה" maxlength="80"><input name="kind" placeholder="סוג, למשל ראמן" maxlength="40"><select name="day" aria-label="יום במסלול"><option value="">לפי המסלול</option></select></div><button class="tiny-btn dark" type="submit">הוספה למסלול</button><p id="placeMessage" class="place-message" role="status"></p></form></section>
+<section class="section" id="days"><div class="section-head"><div><h2>יום אחרי יום</h2><p>לחיצה על יום פותחת רק את מה שרלוונטי.</p></div><button id="toggleAll" class="tiny-btn" type="button">פתח הכל</button></div><input id="tripSearch" class="trip-search" type="search" placeholder="חיפוש לפי יום, שכונה או מסעדה" aria-label="חיפוש במסלול"><div class="day-jump" id="dayJump"></div><div class="days" id="dayList"></div></section>
+<section class="section" id="destinations"><div class="section-head"><div><h2>⭐ מסעדות ששווה לנסוע אליהן</h2><p>לא תלויות במסלול היומי — אלה מקומות ששווה לזכור בפני עצמם.</p></div></div><div class="destination-list" id="destinationList"></div></section>
+<section class="section" id="hotels"><div class="section-head"><div><h2>מלונות</h2><p>כל הלינות במקום אחד.</p></div></div><div class="simple-list" id="hotelList"></div></section>
+<section class="section" id="map"><div class="section-head"><div><h2>מפת הטיול</h2><p>לשימוש כשצריך להבין את התמונה הגדולה.</p></div></div><div class="card map-wrap"><div id="tripMap"></div><div class="map-note">הקו הרציף הוא מעבר הלינות וחוזר לטוקיו. הקווים הדקים הם יציאות יום, לא מסלול תחבורה מדויק.</div></div></section>
+<div class="footer">Japan 2026 · portable package · data + local images</div>
+</main>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script src="data/content.js"></script>
+<script src="js/planner.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

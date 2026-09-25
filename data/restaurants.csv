@@ -1,0 +1,60 @@
+﻿name,type,group,area,source
+GINZA STEAK Ginza Chuo,טפניאקי יוקרתי,ginza,,area-list
+USHIGORO S. GINZA,יאקיניקו יוקרתי בחדרים פרטיים,ginza,,area-list
+Sushi Ginza Onodera Tōryūmon,סושי בר איכותי בעמידה,ginza,,area-list
+Kaiten Sushi Ginza Onodera,קאיטן סושי,ginza,,area-list
+Chūka Soba Ginza Hachigo,ראמן גורמה,ginza,,area-list
+Ginza Chikamitsu,יאקיניקו יוקרתי,ginza,,area-list
+Nikuya Tanaka Ginza,Wagyu Kappo,ginza,,area-list
+Ginza Kagari,ראמן עוף קרמי,ginza,,area-list
+Ginza Cobau,יאקיניקו פרימיום,ginza,,area-list
+Hakkoku,אומקאסה סושי,ginza,,area-list
+Ginza Sand,סנדוויצ׳ים יפניים,ginza,,area-list
+Miko Sushi Ginza,אומקאסה,ginza,,area-list
+Ginza Kyūbey Honten,סושי קלאסי,ginza,,area-list
+Standing Sushi Nemuro Hanamaru Ginza,סושי קז׳ואלי,ginza,,area-list
+Kobe Beef Steak House Ishida Ginza,טפניאקי קובה,ginza,,area-list
+Ippudo Ginza,ראמן טונקוטסו,ginza,,area-list
+Sato Yosuke Ginza Inaniwa Udon,אודון מסורתי,ginza,,area-list
+Rare Tendon Ginza Mitsuyoshi,טמפורה,ginza,,area-list
+Ginza KOKORO,סטייקהאוס פחמים,ginza,,area-list
+Ginza Katsukami,טונקאטסו קורס,ginza,,area-list
+Manten Sushi Marunouchi,אומקאסה,ginza,,area-list
+T’s Tantan,ראמן טבעוני,ginza,,area-list
+YAUMAY,דים סאם,ginza,,area-list
+Nihonbashi Yukari,בישול יפני מסורתי,ginza,,area-list
+Tapas Molecular Bar,פיין דיינינג מולקולרי,ginza,,area-list
+Menchirashi,אודון טרי,west_tokyo,,area-list
+Harajuku Gyozaro,גיוזה,west_tokyo,,area-list
+DE FRITES STAAN HARAJUKU,צ׳יפס ובשר מיושן,west_tokyo,,area-list
+Vegan Bistro Jangara,ראמן טבעוני,west_tokyo,,area-list
+BRISKSTAND OMOTESANDO,המבורגר,west_tokyo,,area-list
+Gyukatsu Kyoto Katsugyu,גיוקאצו,west_tokyo,,area-list
+Kappore,איזקאיה מודרנית,west_tokyo,,area-list
+Masaka,איזקאיה טבעונית,west_tokyo,,area-list
+Jikasei MENSHO,ראמן מודרני,west_tokyo,,area-list
+Han no Daidokoro Bettei Shibuya,יאקיניקו וואגיו,west_tokyo,,area-list
+Daikanyama Issai Kassai,יפני עונתי וסשימי,west_tokyo,,area-list
+Nakameguro Iguchi Agaru,קושיאגה / טמפורה,west_tokyo,,area-list
+Yoroniku Ebisu,יאקיניקו,west_tokyo,,area-list
+AFURI Ebisu,ראמן יוזו,west_tokyo,,area-list
+Shodai Ebisu,White Curry Udon עם קציפת תפוחי אדמה,west_tokyo,,area-list
+Sowado,איזקאיה מודרנית,west_tokyo,,area-list
+Toriyaki Ohana,מסעדת עוף,west_tokyo,,area-list
+Sushi Kenshin Ebisu Tokyo,אומקאסה אינטימי,west_tokyo,,area-list
+Ta-im (Ebisu Shop),ישראלי,west_tokyo,,area-list
+Yakumo Saryo,קייסקי,west_tokyo,,area-list
+Udatsu Sushi,אומקאסה מודרני,west_tokyo,,area-list
+Age.3 GINZA,🍞 נשנוש,food_stop,Ginza,2026-10-01
+Standing Sushi Nemuro Hanamaru Ginza Branch,🍣 כמה ביסים,food_stop,Ginza,2026-10-01
+Seirinkan,🍕 לחלוק,food_stop,Nakameguro,2026-10-02
+Shogun Burger Shinjuku,🍔 אחרי הארי פוטר,food_stop,Shinjuku,2026-10-03
+Udon Shin,🍜 קליל יחסית,food_stop,Shinjuku,2026-10-03
+Kakekomi Gyoza,🥟 נשנוש ערב,food_stop,Kabukicho / Shinjuku,2026-10-03
+Tokyo Curry Pan,🥐 נשנוש,food_stop,Asakusa / Kuramae,2026-10-04
+Wagyu Ichinoya Asakusa,🥩 צהריים,food_stop,Asakusa,2026-10-04
+Yanaka Ginza,🍡 Street food,food_stop,Yanaka,2026-10-04
+Ramen Break Beats,ראמן,destination,Yūtenji / Meguro,destination
+Sumibi Yakiniku Nakahara,יאקיניקו וואגיו,destination,Ichigaya,destination
+Pizza Marumo,פיצה,destination,Ebisu,destination
+Mon cher ton ton,טפניאקי,destination,Roppongi,destination

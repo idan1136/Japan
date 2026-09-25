@@ -1,0 +1,50 @@
+[
+  {
+    "name": "Ramen Break Beats",
+    "type": "ראמן",
+    "area": "Yūtenji / Meguro",
+    "why": "מסעדת ראמן קטנה ומבוקשת מאוד; מקום שאפשר לבנות סביבו עצירה ייעודית."
+  },
+  {
+    "name": "Sumibi Yakiniku Nakahara",
+    "type": "יאקיניקו וואגיו",
+    "area": "Ichigaya",
+    "why": "ערב בשר ברמה גבוהה במיוחד — מתאים כארוחת יעד."
+  },
+  {
+    "name": "Udatsu Sushi",
+    "type": "אומקאסה",
+    "area": "Nakameguro",
+    "why": "אומקאסה יצירתי ואינטימי; מתאים לערב סושי מתוכנן."
+  },
+  {
+    "name": "Udon Shin",
+    "type": "אודון",
+    "area": "Shinjuku / Yoyogi",
+    "why": "אודון טרי שמכינים במקום; סטייה מוצלחת בצהריים."
+  },
+  {
+    "name": "Pizza Marumo",
+    "type": "פיצה",
+    "area": "Ebisu",
+    "why": "פיצה עם אופי יפני ובצק קליל; שווה לשמור גם אם לא עוברים באביסו."
+  },
+  {
+    "name": "Hakkoku",
+    "type": "אומקאסה Edomae",
+    "area": "Ginza",
+    "why": "סושי יעד בגינזה; דורש תכנון והזמנה."
+  },
+  {
+    "name": "Mon cher ton ton",
+    "type": "טפניאקי",
+    "area": "Roppongi",
+    "why": "טפניאקי קלאסי שבו השף מבשל מולכם."
+  },
+  {
+    "name": "Seirinkan",
+    "type": "פיצה",
+    "area": "Nakameguro",
+    "why": "פיצריית יעד מזוהה עם טוקיו, ובמקרה שלכם גם משתלבת ביום 2.10."
+  }
+]

@@ -1,0 +1,22 @@
+{
+  "name": "Japan 2026 Trip Planner",
+  "short_name": "Japan 2026",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#f7f7f4",
+  "theme_color": "#b9484f",
+  "lang": "he",
+  "dir": "rtl",
+  "icons": [
+    {
+      "src": "images/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "images/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

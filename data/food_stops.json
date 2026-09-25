@@ -1,0 +1,149 @@
+{
+  "2026-10-01": [
+    {
+      "name": "Age.3 GINZA",
+      "area": "Ginza",
+      "kind": "🍞 נשנוש",
+      "note": "Agepan קריספי במילוי מתוק או מלוח — עצירה קצרה בלי להתחייב לארוחה.",
+      "pick": true
+    },
+    {
+      "name": "Ginza Sand",
+      "area": "Ginza",
+      "kind": "🥪 קליל",
+      "note": "Japanese sando קטן; טוב אם נהיים רעבים לפני ארוחת הערב."
+    },
+    {
+      "name": "Standing Sushi Nemuro Hanamaru Ginza Branch",
+      "area": "Ginza",
+      "kind": "🍣 כמה ביסים",
+      "note": "סושי קז׳ואלי — אפשר לעצור לכמה יחידות ולהמשיך."
+    }
+  ],
+  "2026-10-02": [
+    {
+      "name": "Seirinkan",
+      "area": "Nakameguro",
+      "kind": "🍕 לחלוק",
+      "note": "פיצה טוקיו־נאפוליטנית; מתאים לחלוק פיצה אחת ולהמשיך במסלול.",
+      "pick": true
+    },
+    {
+      "name": "AFURI Ebisu",
+      "area": "Ebisu",
+      "kind": "🍜 קל יחסית",
+      "note": "Yuzu Shio Ramen הדרי ועדין — אופציה טובה כשלא רוצים ארוחה כבדה."
+    },
+    {
+      "name": "Shodai Ebisu",
+      "area": "Ebisu",
+      "kind": "🍜 חובה לנסות",
+      "note": "White Curry Udon עם קציפת תפוחי אדמה מעל הקארי — המנה המפורסמת שחיפשת.",
+      "pick": true
+    },
+    {
+      "name": "Harajuku Gyozaro",
+      "area": "Harajuku",
+      "kind": "🥟 נשנוש",
+      "note": "גיוזה פשוטה, מהירה וזולה — עצירה מצוינת באמצע השיטוט.",
+      "pick": true
+    },
+    {
+      "name": "Menchirashi",
+      "area": "Harajuku",
+      "kind": "🍜 צהריים",
+      "note": "אודון טרי בעבודת יד; לבחור בזה אם מגיעים להראג׳וקו רעבים."
+    },
+    {
+      "name": "BRISKSTAND OMOTESANDO",
+      "area": "Omotesando",
+      "kind": "🍔 אם רעבים",
+      "note": "Cut Burger קריספי — אופציה יותר משביעה, לא חובה אם כבר אכלתם."
+    }
+  ],
+  "2026-10-03": [
+    {
+      "name": "Shogun Burger Shinjuku",
+      "area": "Shinjuku",
+      "kind": "🍔 אחרי הארי פוטר",
+      "note": "המבורגר וואגיו קז׳ואלי אם בא לכם להמשיך לערב בשינג׳וקו."
+    },
+    {
+      "name": "Udon Shin",
+      "area": "Shinjuku",
+      "kind": "🍜 קליל יחסית",
+      "note": "אודון טרי ומפורסם — מתאים לארוחה פשוטה אחרי האטרקציה.",
+      "pick": true
+    },
+    {
+      "name": "Kakekomi Gyoza",
+      "area": "Kabukicho / Shinjuku",
+      "kind": "🥟 נשנוש ערב",
+      "note": "גיוזה ואודן באווירה קז׳ואלית; טוב אם רוצים רק לנשנש."
+    }
+  ],
+  "2026-10-04": [
+    {
+      "name": "Tokyo Curry Pan",
+      "area": "Asakusa / Kuramae",
+      "kind": "🥐 נשנוש",
+      "note": "Curry Pan אפוי עם קארי וגבינה — סטייה קצרה יחסית בתחילת היום.",
+      "pick": true
+    },
+    {
+      "name": "Wagyu Ichinoya Asakusa",
+      "area": "Asakusa",
+      "kind": "🥩 צהריים",
+      "note": "קערת אורז עם Kuroge Wagyu — לשמור כאופציה אם רוצים משהו יותר משביע."
+    },
+    {
+      "name": "Yanaka Ginza",
+      "area": "Yanaka",
+      "kind": "🍡 Street food",
+      "note": "במקום מסעדה מסודרת: לנשנש לאורך הרחוב תוך כדי השיטוט.",
+      "pick": true
+    }
+  ],
+  "2026-10-13": [
+    {
+      "name": "Ginza Kagari",
+      "area": "Ginza / Hibiya",
+      "kind": "🍜 ערב קל",
+      "note": "Tori Paitan קרמי ומעודן; נוח לערב החזרה לטוקיו.",
+      "pick": true
+    },
+    {
+      "name": "Ginza Sand",
+      "area": "Ginza",
+      "kind": "🥪 קליל",
+      "note": "Sando קטן אם לא רוצים ארוחה כבדה אחרי הטיסה."
+    }
+  ],
+  "2026-10-15": [
+    {
+      "name": "Sato Yosuke Ginza Inaniwa Udon",
+      "area": "Ginza",
+      "kind": "🍜 צהריים",
+      "note": "אודון Inaniwa דק ומשיי — אופציה רגועה ליום האחרון.",
+      "pick": true
+    },
+    {
+      "name": "Standing Sushi Nemuro Hanamaru Ginza Branch",
+      "area": "Ginza",
+      "kind": "🍣 קז׳ואל",
+      "note": "סושי מהיר ולא מחייב — קל להכניס בין קניות."
+    },
+    {
+      "name": "T’s Tantan",
+      "area": "Tokyo Station",
+      "kind": "🍜 קליל",
+      "note": "Tantanmen טבעוני; שימושי אם היום האחרון עובר סביב Tokyo Station."
+    },
+    {
+      "name": "Age.3 GINZA",
+      "area": "Ginza",
+      "kind": "🍞 נשנוש",
+      "note": "עצירה מתוקה/מלוחה קצרה לפני או אחרי קניות."
+    }
+  ]
+}

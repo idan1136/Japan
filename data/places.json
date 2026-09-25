@@ -1,0 +1,38 @@
+[
+  {
+    "name": "Tokyo",
+    "lat": 35.6812,
+    "lng": 139.7671,
+    "dates": "1–4.10 / 13–16.10"
+  },
+  {
+    "name": "Kamikochi / Takayama",
+    "lat": 36.1428,
+    "lng": 137.2531,
+    "dates": "5–6.10"
+  },
+  {
+    "name": "Kanazawa",
+    "lat": 36.5613,
+    "lng": 136.6562,
+    "dates": "7.10"
+  },
+  {
+    "name": "Okinawa",
+    "lat": 26.3344,
+    "lng": 127.8056,
+    "dates": "8–12.10"
+  },
+  {
+    "name": "Zamami",
+    "lat": 26.2289,
+    "lng": 127.3033,
+    "dates": "10.10"
+  },
+  {
+    "name": "Gotemba",
+    "lat": 35.3077,
+    "lng": 138.9347,
+    "dates": "14.10"
+  }
+]
