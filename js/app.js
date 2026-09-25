@@ -201,6 +201,18 @@ function syncToggle() {
   document.getElementById('toggleAll').textContent = allOpen ? 'סגור הכל' : 'פתח הכל';
 }
 
+function navOffset() {
+  const nav = document.querySelector('.nav');
+  return (nav ? nav.offsetHeight : 64) + 12;
+}
+
+function scrollToId(id, behavior) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  const top = el.getBoundingClientRect().top + window.scrollY - navOffset();
+  window.scrollTo({ top: Math.max(0, top), behavior: behavior || 'smooth' });
+}
+
 function applyFilter(filter) {
   currentFilter = filter || 'all';
   const query = P.normalize(document.getElementById('tripSearch').value);
@@ -213,6 +225,16 @@ function applyFilter(filter) {
     const day = document.getElementById(el.getAttribute('href').slice(1));
     el.classList.toggle('hidden', !day || day.classList.contains('hidden'));
   });
+  const visible = visibleDays();
+  const note = document.getElementById('filterNote');
+  const labels = { all: 'כל הימים', tokyo: 'טוקיו', alps: 'האלפים', okinawa: 'אוקינאווה' };
+  if (note) {
+    note.textContent = visible.length
+      ? labels[currentFilter] + ' · ' + visible.length + (visible.length === 1 ? ' יום' : ' ימים')
+      : 'אין ימים שמתאימים לחיפוש';
+  }
+  const empty = document.getElementById('emptyDays');
+  if (empty) empty.classList.toggle('hidden', visible.length > 0);
   syncToggle();
 }
 
@@ -261,6 +283,37 @@ document.querySelectorAll('.nav button[data-filter]').forEach(function (button) 
     button.classList.add('active');
     button.setAttribute('aria-pressed', 'true');
     applyFilter(button.dataset.filter);
+    const first = visibleDays()[0];
+    if (first) first.open = true;
+    scrollToId('days');
+  });
+});
+
+document.querySelector('.nav').addEventListener('click', function (event) {
+  const link = event.target.closest('a[href^="#"]');
+  if (!link) return;
+  const id = link.getAttribute('href').slice(1);
+  if (!document.getElementById(id)) return;
+  event.preventDefault();
+  history.pushState(null, '', '#' + id);
+  scrollToId(id);
+});
+
+document.getElementById('dayJump').addEventListener('click', function (event) {
+  const link = event.target.closest('a[href^="#"]');
+  if (!link) return;
+  const day = document.getElementById(link.getAttribute('href').slice(1));
+  if (!day) return;
+  event.preventDefault();
+  day.open = true;
+  const root = document.documentElement;
+  const previous = root.style.scrollBehavior;
+  root.style.scrollBehavior = 'auto';
+  requestAnimationFrame(function () {
+    requestAnimationFrame(function () {
+      scrollToId(day.id, 'auto');
+      root.style.scrollBehavior = previous;
+    });
   });
 });
 
